@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Loading Content...</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      background: #1e293b;
+      padding: 25px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #cbd5f5;
+      font-size: 14px;
+    }
+
+    #timer {
+      font-size: 30px;
+      margin: 15px 0;
+      color: #22c55e;
+    }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      background: gray;
+      color: white;
+      font-size: 16px;
+      cursor: not-allowed;
+    }
+
+    button.active {
+      background: #22c55e;
+      cursor: pointer;
+    }
+
+    .footer {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>⏳ Please Wait</h2>
+  <p>Your content is being prepared. This will only take a few seconds.</p>
+
+  <div id="timer">10</div>
+
+  <!-- Ad Placement Area -->
+  <div>
+    <!-- Paste banner ad code here -->
+  </div>
+
+  <button id="continueBtn">Please wait...</button>
+
+  <div class="footer">
+    Secure loading • Optimized experience
+  </div>
+</div>
+
+<script>
+  let time = 10;
+  const timerEl = document.getElementById("timer");
+  const btn = document.getElementById("continueBtn");
+
+  const interval = setInterval(() => {
+    time--;
+    timerEl.innerText = time;
+
+    if (time <= 0) {
+      clearInterval(interval);
+      btn.innerText = "Continue";
+      btn.classList.add("active");
+      btn.disabled = false;
+    }
+  }, 1000);
+
+  btn.onclick = () => {
+    window.location.href = "https://t.me/teraboxvideo_link_extractor_bot";
+  };
+</script>
+
+<!-- Paste Popunder / Script Ad here -->
+
+</body>
+</html>
