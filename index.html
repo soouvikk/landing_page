@@ -1,115 +1,957 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  
+  <!-- Monetag Verification -->
   <meta name="monetag" content="bc3606a05f153745a16e39e4e1520c9c">
-  <title>Loading Content...</title>
-
+  
+  <!-- Monetag SDK for Video Ads -->
+  <script src="https://cdn.monetag.com/sdk/latest/monetag.min.js" 
+          data-zone="YOUR_ZONE_ID" 
+          data-sdk="show_YOUR_ZONE_ID"></script>
+  
+  <title>EarnifyBot - Earn Money</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f172a;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #0f0f0f 100%);
+      min-height: 100vh;
       color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
     }
 
     .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      padding-bottom: 100px;
+    }
+
+    /* Balance Card */
+    .balance-card {
+      background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+      border-radius: 28px;
+      padding: 24px;
+      margin-bottom: 20px;
       text-align: center;
-      background: #1e293b;
-      padding: 25px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 400px;
+      border: 1px solid rgba(34, 197, 94, 0.2);
     }
 
-    h2 {
-      margin-bottom: 10px;
+    .balance-label {
+      font-size: 12px;
+      color: #888;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
     }
 
-    p {
-      color: #cbd5f5;
+    .balance-amount {
+      font-size: 52px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #facc15, #22c55e);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1;
+    }
+
+    .balance-value {
+      font-size: 14px;
+      color: #22c55e;
+      margin-top: 6px;
+    }
+
+    /* Rate Card */
+    .rate-card {
+      background: rgba(34, 197, 94, 0.1);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 16px;
+      text-align: center;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .rate-amount {
+      font-size: 22px;
+      font-weight: 700;
+      color: #facc15;
+    }
+
+    .rate-text {
+      font-size: 12px;
+      color: #888;
+      margin-top: 6px;
+    }
+
+    /* Warning Card */
+    .warning-card {
+      background: rgba(239, 68, 68, 0.1);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 20px;
+      text-align: center;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .warning-text {
+      font-size: 12px;
+      color: #ef4444;
+    }
+
+    /* Main Earn Button */
+    .earn-btn {
+      width: 100%;
+      padding: 20px;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      border: none;
+      border-radius: 100px;
+      font-size: 22px;
+      font-weight: 800;
+      color: #000;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: transform 0.2s;
+      box-shadow: 0 5px 25px rgba(34, 197, 94, 0.3);
+    }
+
+    .earn-btn:active {
+      transform: scale(0.97);
+    }
+
+    .earn-btn:disabled {
+      background: #333;
+      transform: none;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* Menu Grid */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .menu-item {
+      background: rgba(30, 30, 30, 0.9);
+      border-radius: 16px;
+      padding: 12px 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .menu-item:active {
+      transform: scale(0.95);
+      background: rgba(34, 197, 94, 0.2);
+    }
+
+    .menu-icon {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    .menu-label {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    /* Section Cards */
+    .section-card {
+      background: rgba(30, 30, 30, 0.9);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    /* Referral */
+    .referral-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
       font-size: 14px;
     }
 
-    #timer {
-      font-size: 30px;
-      margin: 15px 0;
-      color: #22c55e;
+    .referral-stats span:first-child { color: #facc15; }
+    .referral-stats span:last-child { color: #22c55e; }
+
+    .referral-link-box {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
     }
 
-    button {
-      padding: 12px 20px;
-      border: none;
-      border-radius: 6px;
-      background: gray;
-      color: white;
-      font-size: 16px;
-      cursor: not-allowed;
+    .referral-link-box input {
+      flex: 1;
+      background: #0f0f0f;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 12px;
+      color: #fff;
+      font-size: 11px;
+      outline: none;
     }
 
-    button.active {
+    .referral-link-box button {
       background: #22c55e;
+      border: none;
+      border-radius: 12px;
+      padding: 0 16px;
+      color: #000;
+      font-weight: 600;
       cursor: pointer;
     }
 
-    .footer {
-      margin-top: 15px;
+    .referral-info {
+      font-size: 11px;
+      color: #666;
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    /* Withdrawal */
+    .withdraw-input {
+      width: 100%;
+      background: #0f0f0f;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 14px;
+      color: #fff;
+      font-size: 14px;
+      margin-bottom: 16px;
+      outline: none;
+    }
+
+    .withdraw-btn {
+      width: 100%;
+      padding: 14px;
+      background: #22c55e;
+      border: none;
+      border-radius: 100px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #000;
+      cursor: pointer;
+    }
+
+    .withdraw-btn:disabled {
+      background: #333;
+    }
+
+    .min-amount {
+      text-align: center;
       font-size: 12px;
-      color: #94a3b8;
+      color: #888;
+      margin-top: 12px;
+    }
+
+    /* Admin Panel (Hidden for normal users) */
+    .admin-section {
+      display: none;
+      margin-top: 20px;
+      padding: 16px;
+      background: rgba(239, 68, 68, 0.1);
+      border-radius: 16px;
+    }
+
+    .admin-title {
+      color: #ef4444;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .terminate-btn {
+      width: 100%;
+      padding: 12px;
+      background: #ef4444;
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Cooldown Overlay */
+    .cooldown-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.95);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .cooldown-card {
+      background: #1a1a1a;
+      border-radius: 32px;
+      padding: 32px;
+      text-align: center;
+      width: 280px;
+    }
+
+    .cooldown-timer {
+      font-size: 64px;
+      font-weight: 800;
+      color: #22c55e;
+      margin: 16px 0;
+    }
+
+    .cooldown-progress {
+      background: #2a2a2a;
+      border-radius: 100px;
+      height: 6px;
+      margin-top: 16px;
+      overflow: hidden;
+    }
+
+    .cooldown-progress-bar {
+      background: linear-gradient(90deg, #facc15, #22c55e);
+      height: 100%;
+      width: 0%;
+      transition: width 1s linear;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #22c55e;
+      color: #000;
+      padding: 12px 24px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: transform 0.3s;
+      z-index: 1001;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast.error {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    /* Video Ad Container */
+    .ad-video-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #000;
+      z-index: 2000;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ad-video-container.active {
+      display: flex;
+    }
+
+    .ad-video {
+      width: 100%;
+      height: auto;
+      max-height: 80%;
+    }
+
+    .close-ad-btn {
+      margin-top: 20px;
+      padding: 12px 30px;
+      background: #22c55e;
+      border: none;
+      border-radius: 100px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
     }
   </style>
 </head>
-
 <body>
-
 <div class="container">
-  <h2>⏳ Please Wait</h2>
-  <p>Your content is being prepared. This will only take a few seconds.</p>
-
-  <div id="timer">10</div>
-
-  <!-- Ad Placement Area -->
-  <div>
-    <!-- Paste banner ad code here -->
+  <!-- Balance Card -->
+  <div class="balance-card">
+    <div class="balance-label">💰 आपका बैलेंस</div>
+    <div class="balance-amount" id="balanceAmount">0</div>
+    <div class="balance-value" id="balanceValue">₹0.00</div>
   </div>
 
-  <button id="continueBtn">Please wait...</button>
+  <!-- Rate Card -->
+  <div class="rate-card">
+    <div class="rate-amount">🎬 एक एड देखने की कीमत: ₹3-5</div>
+    <div class="rate-text">वीडियो पूरा देखने पर मिलेगा रिवॉर्ड</div>
+  </div>
 
-  <div class="footer">
-    Secure loading • Optimized experience
+  <!-- Warning -->
+  <div class="warning-card">
+    <div class="warning-text">
+      ⚠️ वीडियो खतम होने से पहले बंद मत करना, नहीं तो रिवॉर्ड नहीं मिलेगा!
+    </div>
+  </div>
+
+  <!-- Main Earn Button -->
+  <button class="earn-btn" id="earnBtn">🎬 Ad Dekho</button>
+
+  <!-- Menu Grid -->
+  <div class="menu-grid">
+    <div class="menu-item" id="balanceMenu">
+      <div class="menu-icon">💰</div>
+      <div class="menu-label">Balance</div>
+    </div>
+    <div class="menu-item" id="referMenu">
+      <div class="menu-icon">👥</div>
+      <div class="menu-label">Refer & Earn</div>
+    </div>
+    <div class="menu-item" id="bonusMenu">
+      <div class="menu-icon">🎁</div>
+      <div class="menu-label">Bonus</div>
+    </div>
+    <div class="menu-item" id="withdrawMenu">
+      <div class="menu-icon">💳</div>
+      <div class="menu-label">Withdraw</div>
+    </div>
+  </div>
+
+  <!-- Referral Section -->
+  <div id="referralSection" class="section-card">
+    <div class="section-title">👥 Refer & Earn</div>
+    <div class="referral-stats">
+      <span>👤 Invited: <span id="referralCount">0</span></span>
+      <span>💰 Earned: <span id="referralEarned">0</span></span>
+    </div>
+    <div class="referral-link-box">
+      <input type="text" id="referralLink" readonly>
+      <button id="copyLinkBtn">📋 Copy</button>
+    </div>
+    <div class="referral-info">
+      🎁 हर नए यूजर पर: <strong>40 coins + 5% उनकी कमाई से</strong>
+    </div>
+  </div>
+
+  <!-- Bonus Section -->
+  <div id="bonusSection" class="section-card">
+    <div class="section-title">🎁 Daily Bonus</div>
+    <div style="text-align: center; padding: 10px;">
+      <div style="font-size: 48px; margin-bottom: 10px;">⭐</div>
+      <div style="font-size: 16px; margin-bottom: 15px;">Your bonus is ready!</div>
+      <button id="claimBonusBtn" style="background: #facc15; border: none; padding: 12px 24px; border-radius: 100px; font-weight: 600; cursor: pointer;">Tap Bonus</button>
+    </div>
+  </div>
+
+  <!-- Withdrawal Section -->
+  <div id="withdrawSection" class="section-card">
+    <div class="section-title">💳 Withdraw Money</div>
+    <input type="text" id="upiInput" class="withdraw-input" placeholder="Enter your UPI ID (e.g., username@okhdfcbank)">
+    <button id="withdrawSubmitBtn" class="withdraw-btn">Request Withdrawal</button>
+    <div class="min-amount">⚠️ Minimum withdrawal: ₹500 (50,000 coins)</div>
+  </div>
+
+  <!-- Admin Section (Only for admin users) -->
+  <div id="adminSection" class="admin-section">
+    <div class="admin-title">🔒 Admin Panel</div>
+    <button id="terminateUserBtn" class="terminate-btn">⚠️ Terminate User (Ban)</button>
   </div>
 </div>
 
+<!-- Cooldown Overlay -->
+<div id="cooldownOverlay" class="cooldown-overlay">
+  <div class="cooldown-card">
+    <div style="font-size: 48px;">⏰</div>
+    <div style="font-size: 18px; font-weight: 600; margin: 16px 0;">Please Wait</div>
+    <div class="cooldown-timer" id="cooldownTimer">30</div>
+    <div>seconds until next ad</div>
+    <div class="cooldown-progress">
+      <div class="cooldown-progress-bar" id="cooldownProgress"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Video Ad Container -->
+<div id="adVideoContainer" class="ad-video-container">
+  <video id="adVideo" class="ad-video" controls autoplay>
+    <source src="" type="video/mp4">
+  </video>
+  <button class="close-ad-btn" id="closeAdBtn" style="display: none;">✅ Claim Reward</button>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
 <script>
-  let time = 10;
-  const timerEl = document.getElementById("timer");
-  const btn = document.getElementById("continueBtn");
+  // ============================================
+  // Telegram WebApp Initialization
+  // ============================================
+  const tg = window.Telegram.WebApp;
+  tg.expand();
+  tg.enableClosingConfirmation();
 
-  const interval = setInterval(() => {
-    time--;
-    timerEl.innerText = time;
+  // ============================================
+  // User Data
+  // ============================================
+  const user = tg.initDataUnsafe?.user || { id: 123456, username: "User" };
+  const userId = user.id;
+  const userName = user.username || "User";
 
-    if (time <= 0) {
-      clearInterval(interval);
-      btn.innerText = "Continue";
-      btn.classList.add("active");
-      btn.disabled = false;
+  // Admin User IDs (Users who can see admin panel)
+  const ADMIN_IDS = [6375683282, 8620946847]; // Add your Telegram user ID here
+
+  // ============================================
+  // Video Ads (Replace with your actual video URLs)
+  // ============================================
+  const videoAds = [
+    "https://your-cdn.com/ad1.mp4",
+    "https://your-cdn.com/ad2.mp4",
+    "https://your-cdn.com/ad3.mp4",
+    "https://your-cdn.com/ad4.mp4"
+  ];
+
+  const MIN_REWARD = 300;  // 300 coins = ₹3
+  const MAX_REWARD = 500;  // 500 coins = ₹5
+  const WITHDRAW_REQUIREMENT = 50000; // 50,000 coins = ₹500
+  const COOLDOWN_SECONDS = 30;
+
+  // ============================================
+  // App State
+  // ============================================
+  let balance = 0;
+  let totalEarned = 0;
+  let referralCount = 0;
+  let referralEarned = 0;
+  let isCooldownActive = false;
+  let cooldownInterval = null;
+  let isBanned = false;
+  let isSuspicious = false;
+
+  // ============================================
+  // DOM Elements
+  // ============================================
+  const balanceAmountEl = document.getElementById('balanceAmount');
+  const balanceValueEl = document.getElementById('balanceValue');
+  const earnBtn = document.getElementById('earnBtn');
+  const cooldownOverlay = document.getElementById('cooldownOverlay');
+  const cooldownTimerEl = document.getElementById('cooldownTimer');
+  const cooldownProgress = document.getElementById('cooldownProgress');
+  const toastEl = document.getElementById('toast');
+  const adVideoContainer = document.getElementById('adVideoContainer');
+  const adVideo = document.getElementById('adVideo');
+  const closeAdBtn = document.getElementById('closeAdBtn');
+  const referralSection = document.getElementById('referralSection');
+  const bonusSection = document.getElementById('bonusSection');
+  const withdrawSection = document.getElementById('withdrawSection');
+  const referralLinkInput = document.getElementById('referralLink');
+  const referralCountEl = document.getElementById('referralCount');
+  const referralEarnedEl = document.getElementById('referralEarned');
+  const adminSection = document.getElementById('adminSection');
+
+  // ============================================
+  // Utility Functions
+  // ============================================
+  function showToast(message, isError = false) {
+    toastEl.textContent = message;
+    toastEl.classList.add('show');
+    if (isError) toastEl.classList.add('error');
+    else toastEl.classList.remove('error');
+    
+    setTimeout(() => {
+      toastEl.classList.remove('show');
+    }, 3000);
+  }
+
+  function updateBalanceUI() {
+    balanceAmountEl.textContent = Math.floor(balance);
+    balanceValueEl.textContent = `₹${(balance / 100).toFixed(2)}`;
+    
+    // Save to localStorage
+    localStorage.setItem(`earnify_balance_${userId}`, balance);
+    localStorage.setItem(`earnify_total_${userId}`, totalEarned);
+  }
+
+  function getRandomReward() {
+    return Math.floor(Math.random() * (MAX_REWARD - MIN_REWARD + 1)) + MIN_REWARD;
+  }
+
+  // ============================================
+  // Suspicious Activity Detection
+  // ============================================
+  let taskCount = 0;
+  let taskTimes = [];
+
+  function detectSuspiciousActivity() {
+    const now = Date.now();
+    taskTimes.push(now);
+    taskCount++;
+    
+    // Keep only last 10 tasks
+    if (taskTimes.length > 10) taskTimes.shift();
+    
+    // Check for too many tasks in short time
+    if (taskTimes.length >= 5) {
+      const timeSpan = taskTimes[taskTimes.length - 1] - taskTimes[0];
+      if (timeSpan < 60000) { // 5 tasks in less than 60 seconds
+        isSuspicious = true;
+        showToast("⚠️ Suspicious activity detected! Account flagged.", true);
+        
+        // If suspicious continues, call terminate
+        if (taskCount > 20 && !isBanned) {
+          terminateUser("Auto-detected suspicious activity");
+        }
+      }
     }
-  }, 1000);
+  }
 
-  btn.onclick = () => {
-    window.location.href = "https://t.me/teraboxvideo_link_extractor_bot";
-  };
-</script>
+  // ============================================
+  // User Termination (Admin Feature)
+  // ============================================
+  function terminateUser(reason = "Admin action") {
+    isBanned = true;
+    balance = 0;
+    updateBalanceUI();
+    earnBtn.disabled = true;
+    earnBtn.textContent = "🚫 Account Terminated";
+    showToast(`❌ Your account has been terminated.\nReason: ${reason}`, true);
+    
+    // Save ban status
+    localStorage.setItem(`earnify_banned_${userId}`, 'true');
+    localStorage.setItem(`earnify_ban_reason_${userId}`, reason);
+  }
 
-<script>
-(function(s){s.dataset.zone='10970693',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))
+  function checkIfBanned() {
+    const banned = localStorage.getItem(`earnify_banned_${userId}`);
+    if (banned === 'true') {
+      isBanned = true;
+      earnBtn.disabled = true;
+      earnBtn.textContent = "🚫 Account Terminated";
+      const reason = localStorage.getItem(`earnify_ban_reason_${userId}`) || "Policy violation";
+      showToast(`Account terminated. Reason: ${reason}`, true);
+    }
+  }
 
+  // ============================================
+  // Video Ad Player
+  // ============================================
+  function playVideoAd() {
+    if (isBanned) {
+      showToast("❌ Your account has been terminated. Contact support.", true);
+      return;
+    }
+    
+    const randomAd = videoAds[Math.floor(Math.random() * videoAds.length)];
+    adVideo.src = randomAd;
+    adVideoContainer.classList.add('active');
+    adVideo.play();
+    closeAdBtn.style.display = 'none';
+
+    adVideo.onended = () => {
+      closeAdBtn.style.display = 'block';
+    };
+
+    adVideo.onerror = () => {
+      showToast("Ad failed to load. Please try again.", true);
+      closeAdContainer();
+      earnBtn.disabled = false;
+    };
+  }
+
+  function closeAdContainer() {
+    adVideo.pause();
+    adVideo.src = '';
+    adVideoContainer.classList.remove('active');
+  }
+
+  // ============================================
+  // Claim Reward
+  // ============================================
+  async function claimReward() {
+    closeAdContainer();
+    
+    detectSuspiciousActivity();
+    
+    const reward = getRandomReward();
+    balance += reward;
+    totalEarned += reward;
+    updateBalanceUI();
+    
+    const rewardInRupees = (reward / 100).toFixed(2);
+    showToast(`✅ You earned ${reward} coins! (₹${rewardInRupees})`);
+    
+    startCooldown();
+    
+    // Save to backend (optional)
+    await saveEarningsToBackend(reward);
+  }
+
+  async function saveEarningsToBackend(reward) {
+    // TODO: Connect to your Python backend
+    console.log(`User ${userId} earned ${reward} coins`);
+  }
+
+  // ============================================
+  // Cooldown System
+  // ============================================
+  function startCooldown() {
+    isCooldownActive = true;
+    let remaining = COOLDOWN_SECONDS;
+    cooldownTimerEl.textContent = remaining;
+    cooldownOverlay.style.display = 'flex';
+    
+    if (cooldownInterval) clearInterval(cooldownInterval);
+    
+    cooldownInterval = setInterval(() => {
+      remaining--;
+      cooldownTimerEl.textContent = remaining;
+      const percent = ((COOLDOWN_SECONDS - remaining) / COOLDOWN_SECONDS) * 100;
+      cooldownProgress.style.width = `${percent}%`;
+      
+      if (remaining <= 0) {
+        clearInterval(cooldownInterval);
+        cooldownOverlay.style.display = 'none';
+        isCooldownActive = false;
+        earnBtn.disabled = false;
+      }
+    }, 1000);
+  }
+
+  // ============================================
+  // Earn Button Handler
+  // ============================================
+  earnBtn.addEventListener('click', () => {
+    if (isBanned) {
+      showToast("❌ Account terminated. Contact support.", true);
+      return;
+    }
+    if (isCooldownActive) {
+      showToast(`⏰ Please wait ${COOLDOWN_SECONDS} seconds before next ad`, true);
+      return;
+    }
+    earnBtn.disabled = true;
+    playVideoAd();
+  });
+
+  closeAdBtn.addEventListener('click', claimReward);
+
+  // ============================================
+  // Menu Navigation
+  // ============================================
+  function hideAllSections() {
+    referralSection.style.display = 'none';
+    bonusSection.style.display = 'none';
+    withdrawSection.style.display = 'none';
+  }
+
+  document.getElementById('balanceMenu').addEventListener('click', () => {
+    hideAllSections();
+    showToast(`💰 Balance: ${Math.floor(balance)} coins (₹${(balance/100).toFixed(2)})`);
+  });
+
+  document.getElementById('referMenu').addEventListener('click', () => {
+    hideAllSections();
+    referralSection.style.display = 'block';
+    generateReferralLink();
+  });
+
+  document.getElementById('bonusMenu').addEventListener('click', () => {
+    hideAllSections();
+    bonusSection.style.display = 'block';
+  });
+
+  document.getElementById('withdrawMenu').addEventListener('click', () => {
+    hideAllSections();
+    withdrawSection.style.display = 'block';
+  });
+
+  // ============================================
+  // Referral System
+  // ============================================
+  function generateReferralLink() {
+    const link = `https://t.me/Earnify_Bot?start=ref_${userId}`;
+    referralLinkInput.value = link;
+  }
+
+  document.getElementById('copyLinkBtn')?.addEventListener('click', async () => {
+    const link = referralLinkInput.value;
+    await navigator.clipboard.writeText(link);
+    showToast('✅ Referral link copied! Share with friends');
+  });
+
+  // ============================================
+  // Daily Bonus System
+  // ============================================
+  function checkDailyBonus() {
+    const today = new Date().toDateString();
+    const claimed = localStorage.getItem(`earnify_bonus_${userId}_${today}`);
+    const bonusBtn = document.getElementById('claimBonusBtn');
+    
+    if (claimed) {
+      bonusBtn.disabled = true;
+      bonusBtn.style.background = '#333';
+      bonusBtn.textContent = 'Already Claimed';
+    } else {
+      bonusBtn.disabled = false;
+      bonusBtn.style.background = '#facc15';
+      bonusBtn.textContent = 'Tap Bonus';
+    }
+  }
+
+  document.getElementById('claimBonusBtn')?.addEventListener('click', () => {
+    const today = new Date().toDateString();
+    const claimed = localStorage.getItem(`earnify_bonus_${userId}_${today}`);
+    
+    if (claimed) {
+      showToast("You already claimed today's bonus!", true);
+      return;
+    }
+    
+    const bonus = 100;
+    balance += bonus;
+    totalEarned += bonus;
+    updateBalanceUI();
+    showToast(`🎁 Daily bonus claimed! +${bonus} coins`);
+    
+    localStorage.setItem(`earnify_bonus_${userId}_${today}`, 'claimed');
+    checkDailyBonus();
+  });
+
+  // ============================================
+  // Withdrawal System (UPI - ₹500 minimum)
+  // ============================================
+  document.getElementById('withdrawSubmitBtn')?.addEventListener('click', async () => {
+    const upiId = document.getElementById('upiInput').value.trim();
+    
+    if (!upiId || !upiId.includes('@')) {
+      showToast("Please enter a valid UPI ID (e.g., username@okhdfcbank)", true);
+      return;
+    }
+    
+    if (balance < WITHDRAW_REQUIREMENT) {
+      const needed = WITHDRAW_REQUIREMENT - balance;
+      showToast(`❌ Need ${needed} more coins for withdrawal (₹500 minimum)`, true);
+      return;
+    }
+    
+    if (isSuspicious) {
+      showToast("❌ Withdrawal blocked due to suspicious activity. Contact support.", true);
+      return;
+    }
+    
+    // Create withdrawal request
+    const withdrawalAmount = Math.floor(balance / 100);
+    const requestId = Date.now();
+    
+    // Store withdrawal request
+    const withdrawalRequests = JSON.parse(localStorage.getItem('earnify_withdrawals') || '[]');
+    withdrawalRequests.push({
+      id: requestId,
+      userId: userId,
+      username: userName,
+      amount: withdrawalAmount,
+      coins: balance,
+      upiId: upiId,
+      status: 'pending',
+      date: new Date().toISOString()
+    });
+    localStorage.setItem('earnify_withdrawals', JSON.stringify(withdrawalRequests));
+    
+    showToast(`✅ Withdrawal request submitted!\nAmount: ₹${withdrawalAmount}\nUPI: ${upiId}\nProcessing: 24-48 hours`);
+    
+    // Don't deduct balance until admin approves
+  });
+
+  // ============================================
+  // Admin Panel (User Termination)
+  // ============================================
+  if (ADMIN_IDS.includes(parseInt(userId))) {
+    adminSection.style.display = 'block';
+    
+    document.getElementById('terminateUserBtn')?.addEventListener('click', () => {
+      tg.showPopup({
+        title: '⚠️ Terminate User',
+        message: 'Enter user ID to terminate:',
+        buttons: [{ type: 'ok' }, { type: 'cancel' }]
+      }, (buttonId) => {
+        if (buttonId === 'ok') {
+          tg.showPopup({
+            title: 'Confirm Termination',
+            message: 'Are you sure? This action cannot be undone.',
+            buttons: [{ type: 'destructive', text: 'Terminate' }, { type: 'cancel' }]
+          });
+        }
+      });
+    });
+  }
+
+  // ============================================
+  // Load Saved Data
+  // ============================================
+  function loadSavedData() {
+    const savedBalance = localStorage.getItem(`earnify_balance_${userId}`);
+    if (savedBalance) balance = parseInt(savedBalance);
+    
+    const savedTotal = localStorage.getItem(`earnify_total_${userId}`);
+    if (savedTotal) totalEarned = parseInt(savedTotal);
+    
+    updateBalanceUI();
+  }
+
+  // ============================================
+  // Save Data on Unload
+  // ============================================
+  window.addEventListener('beforeunload', () => {
+    localStorage.setItem(`earnify_balance_${userId}`, balance);
+    localStorage.setItem(`earnify_total_${userId}`, totalEarned);
+  });
+
+  // ============================================
+  // Initialize
+  // ============================================
+  loadSavedData();
+  checkIfBanned();
+  checkDailyBonus();
+  generateReferralLink();
+  
+  // Send user data to Telegram Main Button (optional)
+  tg.MainButton.setText("💰 Earn Money");
+  tg.MainButton.show();
+  tg.MainButton.onClick(() => {
+    if (!isBanned && !isCooldownActive) {
+      earnBtn.click();
+    }
+  });
+  
+  // Set theme
+  tg.setHeaderColor('#0a0a0a');
+  tg.setBackgroundColor('#0a0a0a');
+  
+  console.log("✅ EarnifyBot Mini App Loaded");
 </script>
 </body>
 </html>
